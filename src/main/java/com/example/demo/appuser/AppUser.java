@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -24,9 +23,10 @@ public class AppUser implements UserDetails {
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    private Long id;
-    private String name;
-    private String username;
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    @Column(unique = true)
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -34,20 +34,8 @@ public class AppUser implements UserDetails {
     private Boolean isLocked;
     private Boolean isEnabled;
 
-    public AppUser(String name, String username, String email, String password, AppUserRole appUserRole, Boolean isLocked, Boolean isEnabled) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.appUserRole = appUserRole;
-        this.isLocked = isLocked;
-        this.isEnabled = isEnabled;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(appUserRole.name());
-//        return Collections.singletonList(simpleGrantedAuthority);
         return List.of(new SimpleGrantedAuthority(appUserRole.name()));
     }
 
@@ -58,7 +46,7 @@ public class AppUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
