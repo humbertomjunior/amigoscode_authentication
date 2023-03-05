@@ -6,6 +6,7 @@ import com.example.demo.appuser.AppUserRole;
 import com.example.demo.appuser.AppUserService;
 import com.example.demo.authentication.register.EmailValidator;
 import com.example.demo.authentication.register.RegisterRequest;
+import com.example.demo.email.EmailSender;
 import com.example.demo.security.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailValidator emailValidator;
     private final AppUserService appUserService;
+    private final EmailSender emailSender;
 
     public AuthenticationResponse register (RegisterRequest registerRequest) {
 
