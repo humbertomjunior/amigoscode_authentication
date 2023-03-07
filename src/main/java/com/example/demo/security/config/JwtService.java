@@ -19,6 +19,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    private static final String SAO_PAULO_ZONE_ID = "America/Sao_Paulo";
+
     private static final String SECRET_KEY = "566B59703373367639792442264529482B4D6251655468576D5A713474377721";
     public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
@@ -36,7 +38,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(Date.from (LocalDateTime.now().plusMinutes(30).atZone(ZoneId.systemDefault()).toInstant()))
+                .setExpiration(Date.from (LocalDateTime.now().plusMinutes(30).atZone(ZoneId.of(SAO_PAULO_ZONE_ID)).toInstant()))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

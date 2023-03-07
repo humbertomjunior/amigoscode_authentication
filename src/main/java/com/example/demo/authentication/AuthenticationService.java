@@ -7,12 +7,15 @@ import com.example.demo.appuser.AppUserService;
 import com.example.demo.authentication.register.EmailValidator;
 import com.example.demo.authentication.register.RegisterRequest;
 import com.example.demo.email.EmailSender;
+import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.security.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,13 @@ public class AuthenticationService {
 
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+
+        ConfirmationToken.builder()
+                .appUser(user)
+                .token(jwtToken)
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(30))
+                .build();
 
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

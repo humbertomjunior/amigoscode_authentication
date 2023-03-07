@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     password: password
-    url: jdbc:postgresql://localhost:5432/registration
+    url: jdbc:postgresql://0.0.0.0:5432/registration
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:

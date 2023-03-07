@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class ConfirmationToken {
 
     @Id
