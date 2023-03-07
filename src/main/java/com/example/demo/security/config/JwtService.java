@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class JwtService {
         return extractClaim(jwtToken, Claims::getSubject);
     }
     public Date extractExpiration(String jwtToken){
-        return extractClaim(jwtToken, Claims::getIssuedAt);
+        return extractClaim(jwtToken, Claims::getExpiration);
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -34,7 +36,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(Date.from (LocalDateTime.now().plusMinutes(30).atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
